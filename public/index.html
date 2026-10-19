@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#101411" />
+    <meta
+      name="description"
+      content="A little territory. A lot of possibility. Capture your place on a live, shared grid."
+    />
+    <title>Gridline — Make your mark</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Gridline home"
+        ><span class="brand-icon">▦</span> gridline<span class="brand-dot"
+          >.</span
+        ></a
+      >
+      <div class="top-right">
+        <span class="season">THE SHARED TERRITORY EXPERIMENT</span
+        ><span id="connection" class="connection"><i></i> Connecting</span>
+      </div>
+    </header>
+    <main>
+      <section class="intro">
+        <div>
+          <div class="eyebrow">
+            <span></span> ONE BOARD. EVERYONE'S PLAYGROUND.
+          </div>
+          <h1>A little space.<br />A mark that's <em>yours.</em></h1>
+          <p>Pick a tile. Claim your color. Watch the world move around you.</p>
+        </div>
+        <div class="intro-note">
+          <span class="orbit">↗</span>
+          <p>A living canvas,<br />made by everyone here.</p>
+          <span class="coordinates">30 × 30 / 900 POSSIBILITIES</span>
+        </div>
+      </section>
+      <div class="layout">
+        <section class="board-card" aria-label="Shared territory board">
+          <div class="board-toolbar">
+            <div>
+              <span class="live-dot"></span><strong>The commons</strong
+              ><span class="board-tag">LIVE BOARD</span>
+            </div>
+            <div class="tools">
+              <button id="zoom-out" aria-label="Zoom out">−</button
+              ><span id="zoom-value">100%</span
+              ><button id="zoom-in" aria-label="Zoom in">+</button
+              ><button id="reset-view" aria-label="Reset zoom">↺</button>
+            </div>
+          </div>
+          <div class="board-viewport" id="viewport">
+            <div
+              id="board"
+              role="grid"
+              aria-label="900 capturable tiles. Use arrow keys to move and Enter or Space to capture."
+              aria-rowcount="30"
+              aria-colcount="30"
+            ></div>
+            <div class="loading" id="loading">Connecting to the commons…</div>
+          </div>
+          <div class="board-footer">
+            <span
+              ><i class="legend-empty"></i> Open territory
+              <i class="legend-you"></i> Your tiles</span
+            ><span id="tile-info">Choose your next move</span>
+          </div>
+        </section>
+        <aside>
+          <section class="player-card">
+            <div class="section-label">YOUR LITTLE EMPIRE <span>↗</span></div>
+            <button class="identity" id="edit-profile">
+              <span class="avatar" id="avatar">E</span
+              ><span
+                ><strong id="player-name">Explorer</strong
+                ><small>Change name & color <span>✎</span></small></span
+              >
+            </button>
+            <div class="your-stats">
+              <div>
+                <strong id="my-tiles">0</strong><span>tiles claimed</span>
+              </div>
+              <div>
+                <strong id="my-share">0<span>%</span></strong
+                ><span>of the board</span>
+              </div>
+            </div>
+            <div class="capture-status">
+              <div>
+                <span id="ready-dot"></span
+                ><span id="ready-text">Ready to make a mark</span
+                ><span id="ready-time">↗</span>
+              </div>
+              <div class="cooldown-track"><div id="cooldown-fill"></div></div>
+            </div>
+          </section>
+          <section class="leader-card">
+            <div class="section-label">TERRITORY LEADERS <span>♜</span></div>
+            <div id="leaderboard">
+              <p class="empty-state">
+                A blank canvas. Be the first to claim it.
+              </p>
+            </div>
+            <div class="online">
+              <span class="live-dot"></span
+              ><strong id="online-count">0</strong> explorers online<span
+                id="online-avatars"
+              ></span>
+            </div>
+          </section>
+          <section class="how-card">
+            <span class="how-icon">✳</span>
+            <div>
+              <h2>Small moves. Shared world.</h2>
+              <p>
+                Click a tile to capture it. Take a breath between moves. Fresh
+                captures are protected for 5 seconds.
+              </p>
+              <button id="rules-button">
+                The rules of the commons <span>↗</span>
+              </button>
+            </div>
+          </section>
+        </aside>
+      </div>
+      <section class="bottom-row">
+        <div class="board-progress">
+          <div>
+            <span>THE BIG PICTURE</span
+            ><strong
+              ><span id="claimed-count">0</span>
+              <small>/ 900 tiles claimed</small></strong
+            >
+          </div>
+          <div class="progress-track" id="territory-bar"></div>
+        </div>
+        <div class="activity">
+          <span class="section-label">JUST HAPPENED</span>
+          <p id="activity-text">Every great territory starts with one tile.</p>
+        </div>
+        <div class="board-number">NO. 001 <span>THE COMMONS</span></div>
+      </section>
+      <footer>
+        Built for a world that moves together.<span
+          >Claim a little. Leave a little.
+          <span class="footer-star">✳</span></span
+        >
+      </footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <dialog id="profile-dialog">
+      <form id="profile-form">
+        <div class="dialog-heading">
+          <h2>Make it yours.</h2>
+          <button type="button" class="close-dialog" aria-label="Close">
+            ×
+          </button>
+        </div>
+        <p>Your name and color travel with every tile you claim.</p>
+        <label for="name-input">Explorer name</label
+        ><input
+          id="name-input"
+          name="name"
+          maxlength="24"
+          required
+          autocomplete="nickname"
+        />
+        <fieldset>
+          <legend>Your color</legend>
+          <div id="color-options"></div>
+        </fieldset>
+        <button class="primary" type="submit">
+          Save your identity <span>↗</span>
+        </button>
+      </form>
+    </dialog>
+    <dialog id="rules-dialog">
+      <div class="dialog-heading">
+        <h2>A fair little world.</h2>
+        <button type="button" class="close-dialog" aria-label="Close">×</button>
+      </div>
+      <ol class="rules">
+        <li>
+          <strong>Any tile can be yours.</strong> Click an open tile, or capture
+          an unlocked tile from another explorer.
+        </li>
+        <li>
+          <strong>One move per second.</strong> Your cooldown is shared across
+          all your open tabs.
+        </li>
+        <li>
+          <strong>A moment to settle in.</strong> Every new capture is protected
+          for five seconds.
+        </li>
+        <li>
+          <strong>First accepted, first served.</strong> When two explorers
+          choose the same tile, the server decides. Everyone sees the same
+          result.
+        </li>
+      </ol>
+      <p class="dialog-note">
+        Guest identity stays in this browser. Open another browser or private
+        window to play as a second explorer.
+      </p>
+    </dialog>
+  </body>
+</html>
