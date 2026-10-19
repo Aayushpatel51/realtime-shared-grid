@@ -82,6 +82,14 @@ Manual checks: use two independent browser sessions, capture from each, edit nam
 
 ## Deploying
 
+### Free interview demo on Render
+
+The included `render.yaml` declares a free Node web service. Create a Render Blueprint from this repository, or create a Web Service using `npm ci` to build and `npm start` to launch. Use Node 24, set `HOST=0.0.0.0` and `COOKIE_SECURE=1`. The server uses Render's `RENDER_EXTERNAL_URL` for strict HTTPS origin checks automatically; a custom domain can override this with `APP_ORIGIN`.
+
+**Demo limitation:** Render's free service sleeps when idle, so the first request can be slow. Its filesystem is ephemeral: ownership and guest records can reset after sleep, restart, or redeployment. This is an interview demonstration, not durable production hosting. For persistent data, use a paid instance with a disk and set `DB_PATH` to that mounted disk, or migrate to an external database.
+
+### Persistent hosting
+
 Run **one Node process** on a host with persistent storage and WebSocket support. Optional Docker packaging:
 
 ```sh

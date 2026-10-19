@@ -10,7 +10,7 @@ const cookie = (req) =>
   )?.[1];
 export function createApp({
   dbPath = process.env.DB_PATH || "data/grid.sqlite",
-  origin = process.env.APP_ORIGIN,
+  origin = process.env.APP_ORIGIN || process.env.RENDER_EXTERNAL_URL,
 } = {}) {
   const store = createStore(dbPath);
   const clients = new Map();

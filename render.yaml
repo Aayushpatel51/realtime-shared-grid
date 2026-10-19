@@ -1,0 +1,20 @@
+# Free interview demo: local SQLite data is ephemeral on this plan.
+services:
+  - type: web
+    name: gridline-interview
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.19.0
+      - key: HOST
+        value: 0.0.0.0
+      - key: NODE_ENV
+        value: production
+      - key: COOKIE_SECURE
+        value: "1"
+      - key: DB_PATH
+        value: data/grid.sqlite
